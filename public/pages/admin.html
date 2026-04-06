@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — AI Tools Hub</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-dot"></div>
+      AI Tools Hub
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">← Back to site</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="font-size:13px;color:var(--text3)">Admin Panel</span>
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--accent)"></div>
+    </div>
+  </div>
+</nav>
+
+<div class="admin-layout">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="admin-sidebar">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);padding:0 12px;margin-bottom:12px">Overview</div>
+    <nav class="admin-nav" id="admin-nav">
+      <div class="admin-nav-item active" onclick="showSection('dashboard')">
+        <span class="admin-nav-icon">📊</span> Dashboard
+      </div>
+      <div class="admin-nav-item" onclick="showSection('tools')">
+        <span class="admin-nav-icon">🛠</span> Tools
+        <span style="margin-left:auto;font-size:11px;background:var(--surface2);padding:2px 7px;border-radius:100px;color:var(--text3)">12</span>
+      </div>
+      <div class="admin-nav-item" onclick="showSection('suggestions')">
+        <span class="admin-nav-icon">💡</span> Suggestions
+        <span style="margin-left:auto;font-size:11px;background:var(--amber)20;color:var(--amber);padding:2px 7px;border-radius:100px;font-weight:700">3</span>
+      </div>
+      <div class="admin-nav-item" onclick="showSection('reviews')">
+        <span class="admin-nav-icon">⭐</span> Reviews
+        <span style="margin-left:auto;font-size:11px;background:var(--amber)20;color:var(--amber);padding:2px 7px;border-radius:100px;font-weight:700">5</span>
+      </div>
+      <div class="admin-nav-item" onclick="showSection('messages')">
+        <span class="admin-nav-icon">💬</span> Messages
+        <span style="margin-left:auto;font-size:11px;background:var(--accent2)20;color:var(--accent2);padding:2px 7px;border-radius:100px;font-weight:700">2</span>
+      </div>
+      <div class="admin-nav-item" onclick="showSection('users')">
+        <span class="admin-nav-icon">👥</span> Users
+      </div>
+      <div class="admin-nav-item" onclick="showSection('library')">
+        <span class="admin-nav-icon">📚</span> Pro Library
+      </div>
+    </nav>
+
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);padding:0 12px;margin:24px 0 12px">Site</div>
+    <nav class="admin-nav">
+      <div class="admin-nav-item" onclick="showSection('categories')">
+        <span class="admin-nav-icon">🏷</span> Categories
+      </div>
+      <div class="admin-nav-item" onclick="showSection('analytics')">
+        <span class="admin-nav-icon">📈</span> Analytics
+      </div>
+    </nav>
+  </aside>
+
+  <!-- ═══ MAIN ═══ -->
+  <main class="admin-content">
+
+    <!-- DASHBOARD -->
+    <div id="section-dashboard">
+      <div style="margin-bottom:28px">
+        <h2 style="font-size:24px;font-weight:800;margin-bottom:4px">Good morning, Yozee 👋</h2>
+        <p style="color:var(--text2);font-size:14px">Here's what's happening on AI Tools Hub today.</p>
+      </div>
+
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="stat-card-label">Total Tools</div>
+          <div class="stat-card-value" style="color:var(--primary2)">12</div>
+          <div class="stat-card-change">+2 this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Members</div>
+          <div class="stat-card-value" style="color:var(--accent)">4,218</div>
+          <div class="stat-card-change">+84 this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Pro Subscribers</div>
+          <div class="stat-card-value" style="color:var(--amber)">67</div>
+          <div class="stat-card-change">+5 this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Monthly Revenue</div>
+          <div class="stat-card-value" style="color:var(--accent2)">335k</div>
+          <div class="stat-card-change" style="color:var(--text3)">TZS / month</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
+        <!-- Pending items -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);padding:20px">
+          <div style="font-family:var(--font-display);font-weight:700;font-size:16px;margin-bottom:16px">Needs your attention</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px;background:var(--surface2);border-radius:10px;cursor:pointer" onclick="showSection('suggestions')">
+              <span style="font-size:14px">💡 3 pending suggestions</span>
+              <span style="color:var(--amber);font-size:12px;font-weight:700">Review →</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px;background:var(--surface2);border-radius:10px;cursor:pointer" onclick="showSection('reviews')">
+              <span style="font-size:14px">⭐ 5 reviews awaiting approval</span>
+              <span style="color:var(--amber);font-size:12px;font-weight:700">Review →</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:10px;background:var(--surface2);border-radius:10px;cursor:pointer" onclick="showSection('messages')">
+              <span style="font-size:14px">💬 2 unanswered messages</span>
+              <span style="color:var(--accent2);font-size:12px;font-weight:700">Reply →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top tools -->
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);padding:20px">
+          <div style="font-family:var(--font-display);font-weight:700;font-size:16px;margin-bottom:16px">Top tools this week</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            ${[
+              { emoji:'🤖', name:'ChatGPT', clicks:1243 },
+              { emoji:'🎨', name:'Midjourney', clicks:892 },
+              { emoji:'🧠', name:'Claude', clicks:741 },
+              { emoji:'🔍', name:'Perplexity', clicks:612 },
+              { emoji:'💻', name:'Cursor', clicks:489 },
+            ].map((t,i) => `
+              <div style="display:flex;align-items:center;gap:10px">
+                <span style="color:var(--text3);font-size:13px;width:16px">${i+1}</span>
+                <span style="font-size:16px">${t.emoji}</span>
+                <span style="font-size:14px;flex:1">${t.name}</span>
+                <span style="font-size:12px;color:var(--text3)">${t.clicks.toLocaleString()} clicks</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOLS -->
+    <div id="section-tools" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <h2 style="font-size:22px;font-weight:800">Manage Tools</h2>
+        <button class="btn btn-primary" onclick="openModal('add-tool')">+ Add Tool</button>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);overflow:hidden">
+        <table class="data-table">
+          <thead><tr>
+            <th>Tool</th><th>Category</th><th>Rating</th><th>Status</th><th>Actions</th>
+          </tr></thead>
+          <tbody>
+            ${TOOLS.map(t => `
+              <tr>
+                <td>
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <span style="font-size:20px">${t.emoji}</span>
+                    <div>
+                      <div style="font-weight:600;color:var(--text)">${t.name}</div>
+                      <div style="font-size:11px;color:var(--text3)">${t.votes.toLocaleString()} votes</div>
+                    </div>
+                  </div>
+                </td>
+                <td>${t.category}</td>
+                <td style="color:var(--amber)">★ ${t.rating}</td>
+                <td><span class="badge badge-approved">approved</span></td>
+                <td>
+                  <div style="display:flex;gap:6px">
+                    <button class="btn btn-sm btn-outline" onclick="editTool(${t.id})">Edit</button>
+                    <button class="btn btn-sm" style="background:var(--accent2)20;color:var(--accent2);border:1px solid var(--accent2)30;padding:7px 14px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer" onclick="deleteToolAdmin(${t.id})">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SUGGESTIONS -->
+    <div id="section-suggestions" style="display:none">
+      <div style="margin-bottom:24px">
+        <h2 style="font-size:22px;font-weight:800">Tool Suggestions</h2>
+        <p style="color:var(--text2);font-size:14px;margin-top:4px">Review and approve community-suggested tools</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        ${[
+          { user:'Fatuma R.', name:'Otter.ai', url:'https://otter.ai', desc:'AI meeting transcription and note-taking. Automatically transcribes meetings in real time.', date:'2 days ago' },
+          { user:'David M.',  name:'Pika Labs', url:'https://pika.art', desc:'Generate and edit video with AI. Create cinematic videos from text or images.', date:'3 days ago' },
+          { user:'Amina K.',  name:'Adobe Firefly', url:'https://firefly.adobe.com', desc:'Adobe\'s generative AI for image creation, integrated into Photoshop and Illustrator.', date:'5 days ago' },
+        ].map((s, i) => `
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);padding:20px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
+              <div style="flex:1;min-width:260px">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                  <span style="font-family:var(--font-display);font-size:17px;font-weight:700">${s.name}</span>
+                  <span class="badge badge-pending">pending</span>
+                </div>
+                <div style="font-size:13px;color:var(--text3);margin-bottom:6px">
+                  Suggested by <strong style="color:var(--text2)">${s.user}</strong> · ${s.date}
+                </div>
+                <p style="font-size:13px;color:var(--text2);margin-bottom:8px">${s.desc}</p>
+                <a href="${s.url}" target="_blank" style="font-size:12px;color:var(--primary2)">${s.url} ↗</a>
+              </div>
+              <div style="display:flex;gap:8px;flex-shrink:0">
+                <button class="btn btn-sm" style="background:var(--accent)20;color:var(--accent);border:1px solid var(--accent)30;padding:7px 14px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer" onclick="approveItem(${i}, 'Suggestion')">✓ Approve</button>
+                <button class="btn btn-sm btn-outline" onclick="rejectItem(${i}, 'Suggestion')">✕ Reject</button>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- MESSAGES -->
+    <div id="section-messages" style="display:none">
+      <div style="margin-bottom:24px">
+        <h2 style="font-size:22px;font-weight:800">Ask Yozee — Messages</h2>
+        <p style="color:var(--text2);font-size:14px;margin-top:4px">Reply to user questions. Pro members shown first.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        ${[
+          { user:'Amina K.', msg:'What is the best AI tool for writing a business plan from scratch?', date:'1 hour ago', status:'pending', pro:true },
+          { user:'Hassan J.', msg:'Can you recommend a free AI image generator that works well for logos?', date:'3 hours ago', status:'pending', pro:false },
+          { user:'Fatuma R.', msg:'Is ChatGPT-4 worth it compared to the free version for content writing?', date:'2 days ago', status:'replied', pro:false },
+        ].map((m, i) => `
+          <div style="background:var(--surface);border:1px solid ${m.pro ? 'var(--amber)30' : 'var(--border)'};border-radius:var(--card-radius);padding:20px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+              <div class="review-avatar" style="width:36px;height:36px;border-radius:50%;background:var(--primary-glow);border:1px solid var(--primary)30;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--primary2);font-family:var(--font-display);flex-shrink:0">${m.user[0]}</div>
+              <div style="flex:1">
+                <span style="font-weight:600;font-size:14px">${m.user}</span>
+                ${m.pro ? '<span style="background:linear-gradient(135deg,#ff6b6b,#ffb347);font-size:10px;font-weight:800;padding:2px 7px;border-radius:100px;color:#07080f;margin-left:6px">PRO</span>' : ''}
+                <span style="font-size:12px;color:var(--text3);margin-left:8px">${m.date}</span>
+              </div>
+              <span class="badge ${m.status === 'replied' ? 'badge-approved' : 'badge-pending'}">${m.status}</span>
+            </div>
+            <p style="font-size:14px;color:var(--text2);margin-bottom:14px">"${m.msg}"</p>
+            ${m.status === 'pending' ? `
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <textarea class="form-input" style="flex:1;min-width:200px;min-height:72px" placeholder="Type your reply..."></textarea>
+                <button class="btn btn-primary btn-sm" style="align-self:flex-end" onclick="replyMessage(${i})">Send reply</button>
+              </div>
+            ` : `
+              <div style="background:var(--surface2);border-left:3px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;color:var(--text2)">
+                ✓ Replied
+              </div>
+            `}
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div id="section-users" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <h2 style="font-size:22px;font-weight:800">Members</h2>
+        <span style="font-size:14px;color:var(--text2)">4,218 total · 67 Pro</span>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);overflow:hidden">
+        <table class="data-table">
+          <thead><tr><th>User</th><th>Email</th><th>Joined</th><th>Status</th><th>Tools saved</th></tr></thead>
+          <tbody>
+            ${[
+              { name:'Amina K.',  email:'amina@example.com',  joined:'Jan 2026', pro:true,  saved:12 },
+              { name:'David M.',  email:'david@example.com',  joined:'Feb 2026', pro:false, saved:7  },
+              { name:'Fatuma R.', email:'fatuma@example.com', joined:'Mar 2026', pro:true,  saved:23 },
+              { name:'Hassan J.', email:'hassan@example.com', joined:'Mar 2026', pro:false, saved:3  },
+              { name:'Grace T.',  email:'grace@example.com',  joined:'Mar 2026', pro:false, saved:8  },
+            ].map(u => `
+              <tr>
+                <td>
+                  <div style="display:flex;align-items:center;gap:10px">
+                    <div style="width:32px;height:32px;border-radius:50%;background:var(--primary-glow);border:1px solid var(--primary)30;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--primary2)">${u.name[0]}</div>
+                    <span style="font-weight:500;color:var(--text)">${u.name}</span>
+                  </div>
+                </td>
+                <td>${u.email}</td>
+                <td>${u.joined}</td>
+                <td>${u.pro ? '<span class="pro-badge" style="font-size:10px">Pro</span>' : '<span style="font-size:12px;color:var(--text3)">Free</span>'}</td>
+                <td>${u.saved}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div id="section-reviews" style="display:none">
+      <div style="margin-bottom:24px">
+        <h2 style="font-size:22px;font-weight:800">Pending Reviews</h2>
+        <p style="color:var(--text2);font-size:14px;margin-top:4px">Approve or reject community reviews before they go live</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        ${[
+          { user:'Hassan J.', tool:'ChatGPT', stars:5, body:'This tool changed my productivity completely. I use it for emails, coding, and research daily. Absolutely worth it.', date:'1 day ago' },
+          { user:'Grace T.',  tool:'Midjourney', stars:4, body:'Incredible image quality. The learning curve for prompting is a bit steep but once you get it, results are stunning.', date:'2 days ago' },
+        ].map((r, i) => `
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);padding:20px">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap">
+              <div style="flex:1">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+                  <span style="font-weight:600">${r.user}</span>
+                  <span style="font-size:13px;color:var(--text3)">on</span>
+                  <span style="font-weight:600;color:var(--primary2)">${r.tool}</span>
+                  <span style="color:var(--amber)">★ ${r.stars}</span>
+                  <span style="font-size:12px;color:var(--text3)">${r.date}</span>
+                </div>
+                <p style="font-size:14px;color:var(--text2)">"${r.body}"</p>
+              </div>
+              <div style="display:flex;gap:8px;flex-shrink:0">
+                <button class="btn btn-sm" style="background:var(--accent)20;color:var(--accent);border:1px solid var(--accent)30;padding:7px 14px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer" onclick="approveItem(${i},'Review')">✓ Approve</button>
+                <button class="btn btn-sm btn-outline" onclick="rejectItem(${i},'Review')">✕ Reject</button>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- LIBRARY -->
+    <div id="section-library" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <h2 style="font-size:22px;font-weight:800">Pro Library</h2>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-outline btn-sm">+ Add Tutorial</button>
+          <button class="btn btn-primary btn-sm">+ Upload Book</button>
+        </div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);padding:24px;text-align:center">
+        <div style="font-size:48px;margin-bottom:12px">📚</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:8px">6 tutorials · 6 books published</div>
+        <p style="font-size:14px;color:var(--text2)">Manage tutorials and books from this panel. New content drives Pro conversions.</p>
+      </div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div id="section-categories" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+        <h2 style="font-size:22px;font-weight:800">Categories</h2>
+        <button class="btn btn-primary btn-sm">+ Add Category</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px">
+        ${[
+          {emoji:'✍️',name:'Writing',count:45},
+          {emoji:'🎨',name:'Image',count:32},
+          {emoji:'🎬',name:'Video',count:18},
+          {emoji:'💻',name:'Code',count:29},
+          {emoji:'🎵',name:'Audio',count:14},
+          {emoji:'⚡',name:'Productivity',count:38},
+          {emoji:'📊',name:'Business',count:22},
+          {emoji:'🔬',name:'Research',count:17},
+        ].map(c => `
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);padding:16px;display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:22px">${c.emoji}</span>
+              <div>
+                <div style="font-weight:600;font-size:14px">${c.name}</div>
+                <div style="font-size:12px;color:var(--text3)">${c.count} tools</div>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-ghost" style="font-size:16px" onclick="showToast('Edit ${c.name}','info')">⋯</button>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div id="section-analytics" style="display:none">
+      <div style="margin-bottom:24px">
+        <h2 style="font-size:22px;font-weight:800">Analytics</h2>
+        <p style="color:var(--text2);font-size:14px;margin-top:4px">Platform performance overview</p>
+      </div>
+      <div class="stat-cards" style="margin-bottom:24px">
+        <div class="stat-card">
+          <div class="stat-card-label">Total Clicks</div>
+          <div class="stat-card-value" style="color:var(--primary2)">18.4k</div>
+          <div class="stat-card-change">This month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">New Members</div>
+          <div class="stat-card-value" style="color:var(--accent)">348</div>
+          <div class="stat-card-change">This month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Pro Revenue</div>
+          <div class="stat-card-value" style="color:var(--amber)">335k</div>
+          <div class="stat-card-change" style="color:var(--text3)">TZS</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Reviews Posted</div>
+          <div class="stat-card-value" style="color:var(--accent2)">127</div>
+          <div class="stat-card-change">This month</div>
+        </div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);padding:24px;text-align:center">
+        <div style="font-size:32px;margin-bottom:12px">📈</div>
+        <div style="font-size:15px;font-weight:700;margin-bottom:8px">Full analytics charts coming in Phase 11</div>
+        <p style="font-size:13px;color:var(--text2)">Click heatmaps, category trends, subscriber growth charts and more.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Add Tool Modal -->
+<div class="modal-overlay" id="modal-add-tool">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <div class="modal-title">Add New Tool</div>
+      <div class="modal-sub">Fill in the tool details below</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tool name</label>
+      <input type="text" class="form-input" placeholder="e.g. Otter.ai">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Official URL</label>
+      <input type="url" class="form-input" placeholder="https://...">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select class="form-input">
+        <option>Writing</option>
+        <option>Image</option>
+        <option>Video</option>
+        <option>Code</option>
+        <option>Audio</option>
+        <option>Productivity</option>
+        <option>Business</option>
+        <option>Research</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <textarea class="form-input form-textarea" placeholder="Short description shown on tool card..."></textarea>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" onclick="closeModal('add-tool');showToast('Tool added successfully!','success')">Add Tool</button>
+      <button class="btn btn-outline" onclick="closeModal('add-tool')">Cancel</button>
+    </div>
+    <button onclick="closeModal('add-tool')" style="position:absolute;top:20px;right:20px;background:transparent;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+  </div>
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script src="../js/app.js"></script>
+<script>
+const TOOLS = [
+  { id:1,  name:'ChatGPT',     emoji:'🤖', category:'writing', votes:2841, rating:4.8 },
+  { id:2,  name:'Midjourney',  emoji:'🎨', category:'image',   votes:1923, rating:4.9 },
+  { id:3,  name:'Claude',      emoji:'🧠', category:'writing', votes:1654, rating:4.8 },
+  { id:4,  name:'GitHub Copilot', emoji:'👨‍💻', category:'code', votes:1432, rating:4.7 },
+  { id:5,  name:'Runway ML',   emoji:'🎬', category:'video',   votes:987,  rating:4.6 },
+];
+
+function showSection(name) {
+  document.querySelectorAll('[id^="section-"]').forEach(s => s.style.display = 'none');
+  document.getElementById(`section-${name}`).style.display = 'block';
+  document.querySelectorAll('.admin-nav-item').forEach(item => {
+    item.classList.toggle('active', item.textContent.trim().toLowerCase().includes(name));
+  });
+}
+
+function editTool(id) {
+  showToast(`Edit tool ${id} — coming soon`, 'info');
+}
+
+function replyMessage(i) {
+  showToast('Reply sent!', 'success');
+}
+</script>
+</body>
+</html>

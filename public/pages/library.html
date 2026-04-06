@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pro Library — AI Tools Hub</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .library-hero {
+      background: linear-gradient(135deg, var(--bg2) 0%, #1a1528 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 56px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .library-hero::before {
+      content: '';
+      position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, var(--primary)15, transparent 70%);
+      pointer-events: none;
+    }
+    .tabs {
+      display: flex; gap: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--pill-radius);
+      padding: 4px; width: fit-content;
+      margin: 0 auto 32px;
+    }
+    .tab {
+      padding: 8px 20px; border-radius: var(--pill-radius);
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: var(--transition);
+      color: var(--text2); background: transparent; border: none;
+    }
+    .tab.active { background: var(--primary); color: #fff; }
+    .tab:not(.active):hover { color: var(--text); }
+    .library-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .library-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .library-card:hover {
+      border-color: var(--border2);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .library-card-thumb {
+      height: 160px;
+      background: var(--surface2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 64px; position: relative;
+      overflow: hidden;
+    }
+    .library-card-thumb-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, var(--surface));
+    }
+    .library-card-body { padding: 16px 20px 20px; }
+    .library-card-meta {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+    }
+    .difficulty-badge {
+      display: inline-flex; align-items: center;
+      padding: 3px 8px; border-radius: var(--pill-radius);
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .diff-beginner     { background: var(--accent)20;  color: var(--accent);  }
+    .diff-intermediate { background: var(--amber)20;   color: var(--amber);   }
+    .diff-advanced     { background: var(--accent2)20; color: var(--accent2); }
+    .library-card-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+    .library-card-desc  { font-size: 13px; color: var(--text2); line-height: 1.5; margin-bottom: 14px; }
+    .library-card-footer { display: flex; align-items: center; justify-content: space-between; }
+    .library-card-time  { font-size: 12px; color: var(--text3); display: flex; align-items: center; gap: 5px; }
+    .progress-bar {
+      height: 4px; background: var(--surface2); border-radius: 2px; margin-top: 12px;
+      overflow: hidden;
+    }
+    .progress-fill { height: 100%; background: var(--primary); border-radius: 2px; }
+    .locked-overlay {
+      position: absolute; inset: 0;
+      background: var(--bg)cc;
+      backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 8px;
+      opacity: 0; transition: var(--transition);
+      border-radius: var(--card-radius);
+    }
+    .library-card:hover .locked-overlay { opacity: 1; }
+    .filter-bar {
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .filter-select {
+      background: var(--surface); border: 1px solid var(--border2);
+      color: var(--text); font-family: var(--font-body); font-size: 13px;
+      padding: 8px 14px; border-radius: var(--btn-radius);
+      outline: none; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="../index.html" class="nav-logo">
+      <div class="nav-logo-dot"></div>
+      AI Tools Hub
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link">Tools</a>
+      <a href="library.html"  class="nav-link active">Library <span class="pro-badge">Pro</span></a>
+      <a href="favorites.html" class="nav-link">Saved</a>
+      <a href="suggest.html"   class="nav-link">Suggest</a>
+    </div>
+    <div id="auth-buttons" style="display:flex;align-items:center;gap:8px">
+      <button class="nav-btn nav-btn-ghost" onclick="openModal('login')">Sign in</button>
+      <button class="nav-btn nav-btn-primary" onclick="openModal('register')">Join free</button>
+    </div>
+    <div id="user-menu" style="display:none;align-items:center;gap:8px">
+      <span style="font-size:14px;color:var(--text2)">Hi, <strong id="user-name" style="color:var(--text)"></strong></span>
+      <button class="nav-btn nav-btn-ghost" onclick="handleLogout()">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ LIBRARY HERO ═══ -->
+<section class="library-hero">
+  <div class="pro-badge" style="font-size:13px;padding:6px 16px;margin-bottom:20px;display:inline-flex">⚡ Pro Library</div>
+  <h1 style="font-size:clamp(32px,5vw,56px);margin-bottom:12px">
+    Master AI. <span style="background:linear-gradient(135deg,var(--primary2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Learn fast.</span>
+  </h1>
+  <p style="font-size:17px;color:var(--text2);max-width:500px;margin:0 auto 32px">
+    Tutorials, AI engineering books, and deep dives — all in one place. 5,000 TZS/month.
+  </p>
+  <div class="tabs" id="library-tabs">
+    <button class="tab active" onclick="switchTab('tutorials')">📹 Tutorials</button>
+    <button class="tab" onclick="switchTab('books')">📚 Books</button>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap">
+    <span style="font-size:13px;color:var(--text3)">✓ 60+ tutorials</span>
+    <span style="font-size:13px;color:var(--text3)">✓ 20+ books</span>
+    <span style="font-size:13px;color:var(--text3)">✓ New content weekly</span>
+    <span style="font-size:13px;color:var(--text3)">✓ Progress tracking</span>
+  </div>
+</section>
+
+<!-- ═══ CONTENT ═══ -->
+<main class="main-content">
+  <div class="main-inner">
+
+    <!-- Paywall banner (shown to non-pro) -->
+    <div id="paywall-banner" style="background:linear-gradient(135deg,var(--surface),#1a1528);border:1px solid var(--primary)30;border-radius:var(--card-radius);padding:28px 32px;margin-bottom:32px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+      <div style="flex:1;min-width:260px">
+        <div style="font-family:var(--font-display);font-size:20px;font-weight:800;margin-bottom:6px">Unlock the full Pro Library</div>
+        <p style="font-size:14px;color:var(--text2);margin-bottom:0">Get access to all tutorials, books, and future content for just 5,000 TZS/month (≈$1.94).</p>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-shrink:0">
+        <div style="text-align:center">
+          <div style="font-family:var(--font-display);font-size:28px;font-weight:800">5,000</div>
+          <div style="font-size:12px;color:var(--text3)">TZS/month</div>
+        </div>
+        <button class="btn btn-accent" onclick="openModal('upgrade')">Upgrade to Pro →</button>
+      </div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <select class="filter-select" onchange="filterLibrary(this.value, 'difficulty')">
+        <option value="">All levels</option>
+        <option value="beginner">Beginner</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="advanced">Advanced</option>
+      </select>
+      <select class="filter-select" onchange="filterLibrary(this.value, 'topic')">
+        <option value="">All topics</option>
+        <option value="chatgpt">ChatGPT</option>
+        <option value="midjourney">Midjourney</option>
+        <option value="prompt">Prompt Engineering</option>
+        <option value="code">Coding with AI</option>
+      </select>
+    </div>
+
+    <!-- Tutorials tab -->
+    <div id="tab-tutorials" class="library-grid"></div>
+
+    <!-- Books tab -->
+    <div id="tab-books" class="library-grid" style="display:none"></div>
+
+  </div>
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo"><div class="nav-logo-dot"></div>AI Tools Hub</div>
+      <p class="footer-desc">Discover, save, and master AI tools. Built by Yozee.</p>
+      <div class="footer-social">
+        <a class="footer-social-btn" href="#">📸</a>
+        <a class="footer-social-btn" href="#">✉</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Platform</div>
+      <div class="footer-links">
+        <a class="footer-link" href="../index.html">Browse Tools</a>
+        <a class="footer-link" href="library.html">Pro Library</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 AI Tools Hub · Built with passion by Yozee</span>
+    <span>🇹🇿 Tanzania</span>
+  </div>
+</footer>
+
+<div class="toast-container" id="toast-container"></div>
+
+<!-- Upgrade Modal -->
+<div class="modal-overlay" id="modal-upgrade">
+  <div class="modal" style="text-align:center">
+    <div style="font-size:48px;margin-bottom:16px">⚡</div>
+    <div class="modal-title" style="margin-bottom:8px">Upgrade to Pro</div>
+    <div class="modal-sub" style="margin-bottom:20px">Full access to tutorials, books, comparisons, and early tool listings.</div>
+    <div style="font-family:var(--font-display);font-size:40px;font-weight:800;margin-bottom:4px">5,000 TZS</div>
+    <div style="font-size:13px;color:var(--text3);margin-bottom:24px">per month · ≈ $1.94 USD · Cancel anytime</div>
+    <div style="display:grid;gap:10px;margin-bottom:20px;text-align:left">
+      <div style="display:flex;align-items:center;gap:10px;font-size:14px">
+        <span style="color:var(--accent)">✓</span> 60+ AI tutorials (written & video)
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:14px">
+        <span style="color:var(--accent)">✓</span> 20+ AI engineering books
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:14px">
+        <span style="color:var(--accent)">✓</span> Side-by-side tool comparison
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:14px">
+        <span style="color:var(--accent)">✓</span> AI tool recommender quiz
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:14px">
+        <span style="color:var(--accent)">✓</span> Early access to new tools
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:14px">
+        <span style="color:var(--accent)">✓</span> Priority Ask Yozee replies
+      </div>
+    </div>
+    <div style="display:grid;gap:8px">
+      <button class="btn btn-accent btn-full btn-lg" onclick="handleUpgrade('mpesa')">Pay with M-Pesa 📱</button>
+      <button class="btn btn-outline btn-full" onclick="handleUpgrade('airtel')">Pay with Airtel Money</button>
+      <button class="btn btn-outline btn-full" onclick="handleUpgrade('card')">Pay with Card 💳</button>
+    </div>
+    <button onclick="closeModal('upgrade')" style="position:absolute;top:20px;right:20px;background:transparent;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+  </div>
+</div>
+
+<!-- Login / Register modals (same as index) -->
+<div class="modal-overlay" id="modal-login">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Welcome back</div>
+      <div class="modal-sub">Sign in to your account</div>
+    </div>
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group"><label class="form-label">Email</label><input type="email" id="login-email" class="form-input" placeholder="you@example.com"></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" id="login-pass" class="form-input" placeholder="••••••••"></div>
+      <button type="submit" class="btn btn-primary btn-full" style="margin-top:8px">Sign in</button>
+    </form>
+    <button onclick="closeModal('login')" style="position:absolute;top:20px;right:20px;background:transparent;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-register">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Join free</div>
+    </div>
+    <form onsubmit="handleRegister(event)">
+      <div class="form-group"><label class="form-label">Name</label><input type="text" id="reg-name" class="form-input" placeholder="Your name"></div>
+      <div class="form-group"><label class="form-label">Email</label><input type="email" id="reg-email" class="form-input" placeholder="you@example.com"></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" id="reg-pass" class="form-input" placeholder="••••••••"></div>
+      <button type="submit" class="btn btn-primary btn-full" style="margin-top:8px">Create account</button>
+    </form>
+    <button onclick="closeModal('register')" style="position:absolute;top:20px;right:20px;background:transparent;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+  </div>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+const TUTORIALS = [
+  { id:1, emoji:'🤖', title:'Getting Started with ChatGPT', desc:'Learn the fundamentals of ChatGPT prompting, conversation management, and use cases for work and study.', difficulty:'beginner', type:'written', duration:20, progress:100, free:true },
+  { id:2, emoji:'🎨', title:'Midjourney Masterclass', desc:'From basic prompts to advanced style techniques. Create stunning AI art with consistent results every time.', difficulty:'intermediate', type:'video', duration:45, progress:60, free:false },
+  { id:3, emoji:'🧠', title:'Prompt Engineering for LLMs', desc:'Advanced prompting strategies including chain-of-thought, few-shot learning, and system prompt design.', difficulty:'advanced', type:'written', duration:60, progress:0, free:false },
+  { id:4, emoji:'💻', title:'Build with OpenAI API', desc:'Step-by-step guide to integrating GPT-4 into your own applications using Python and the REST API.', difficulty:'intermediate', type:'video', duration:90, progress:0, free:false },
+  { id:5, emoji:'🎬', title:'AI Video with Runway ML', desc:'Create professional video content from text prompts. Learn gen-2, motion brush, and video editing workflows.', difficulty:'beginner', type:'video', duration:35, progress:0, free:false },
+  { id:6, emoji:'🔍', title:'Perplexity for Research', desc:'Use Perplexity AI to supercharge your research workflow. Find cited sources, compare topics, and summarize documents.', difficulty:'beginner', type:'written', duration:15, progress:0, free:true },
+];
+
+const BOOKS = [
+  { id:1, emoji:'📖', title:'Prompt Engineering for Everyone', author:'Yozee Picks', desc:'A complete guide to writing effective prompts for ChatGPT, Claude, Gemini, and other LLMs. Beginner-friendly.', difficulty:'beginner', pages:120, topic:'Prompt Engineering', free:true },
+  { id:2, emoji:'🧠', title:'AI Engineering Fundamentals', author:'Curated Selection', desc:'Understand how large language models work, from transformers to fine-tuning. Essential reading for anyone building with AI.', difficulty:'intermediate', pages:280, topic:'ML / Engineering', free:false },
+  { id:3, emoji:'🚀', title:'Building AI Products', author:'Yozee Picks', desc:'A practical guide to shipping AI-powered products. Covers ideation, prototyping, monetization, and scaling.', difficulty:'intermediate', pages:200, topic:'Product Management', free:false },
+  { id:4, emoji:'📊', title:'Data Science for AI Beginners', author:'Curated Selection', desc:'Python, pandas, NumPy, and basic machine learning models. Perfect for non-engineers entering the AI space.', difficulty:'beginner', pages:340, topic:'Data Science', free:false },
+  { id:5, emoji:'⚖️', title:'Ethics & Safety in AI', author:'Yozee Picks', desc:'Responsible AI development principles. Understanding bias, fairness, and safety in machine learning systems.', difficulty:'beginner', pages:160, topic:'AI Ethics', free:true },
+  { id:6, emoji:'💰', title:'AI Business Strategy', author:'Curated Selection', desc:'How to build, monetize, and scale a business using AI tools. Case studies from Africa and global markets.', difficulty:'advanced', pages:220, topic:'Business', free:false },
+];
+
+let activeTab = 'tutorials';
+let isPro = false;
+
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    t.classList.toggle('active', (i === 0 && tab === 'tutorials') || (i === 1 && tab === 'books'));
+  });
+  document.getElementById('tab-tutorials').style.display = tab === 'tutorials' ? 'grid' : 'none';
+  document.getElementById('tab-books').style.display      = tab === 'books'     ? 'grid' : 'none';
+}
+
+function renderTutorials() {
+  const container = document.getElementById('tab-tutorials');
+  container.innerHTML = TUTORIALS.map(t => `
+    <div class="library-card" onclick="${!isPro && !t.free ? "openModal('upgrade')" : `openTutorial(${t.id})`}" style="position:relative">
+      <div class="library-card-thumb">
+        <span style="z-index:1">${t.emoji}</span>
+        <div class="library-card-thumb-overlay"></div>
+        <div style="position:absolute;top:10px;left:10px;z-index:2">
+          <span class="difficulty-badge diff-${t.difficulty}">${t.difficulty}</span>
+        </div>
+        <div style="position:absolute;top:10px;right:10px;z-index:2;background:var(--surface)cc;border:1px solid var(--border);padding:3px 8px;border-radius:var(--pill-radius);font-size:11px;color:var(--text2)">
+          ${t.type === 'video' ? '▶ Video' : '📄 Written'}
+        </div>
+        ${!isPro && !t.free ? `
+          <div class="locked-overlay">
+            <div style="font-size:24px">🔒</div>
+            <div style="font-size:13px;font-weight:600;color:var(--text)">Pro only</div>
+            <button class="btn btn-accent btn-sm">Upgrade →</button>
+          </div>
+        ` : ''}
+      </div>
+      <div class="library-card-body">
+        <div class="library-card-meta">
+          <span class="difficulty-badge diff-${t.difficulty}">${t.difficulty}</span>
+          ${t.free ? '<span style="background:var(--accent)20;color:var(--accent);font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;text-transform:uppercase">Free</span>' : ''}
+        </div>
+        <div class="library-card-title">${t.title}</div>
+        <div class="library-card-desc">${t.desc}</div>
+        <div class="library-card-footer">
+          <div class="library-card-time">⏱ ${t.duration} min read</div>
+          ${isPro || t.free ? (t.progress > 0 ? `<span style="font-size:12px;color:var(--primary2)">${t.progress}% done</span>` : '<span style="font-size:12px;color:var(--text3)">Not started</span>') : `<span style="font-size:12px;color:var(--text3)">🔒 Pro</span>`}
+        </div>
+        ${(isPro || t.free) && t.progress > 0 ? `<div class="progress-bar"><div class="progress-fill" style="width:${t.progress}%"></div></div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderBooks() {
+  const container = document.getElementById('tab-books');
+  container.innerHTML = BOOKS.map(b => `
+    <div class="library-card" onclick="${!isPro && !b.free ? "openModal('upgrade')" : `openBook(${b.id})`}" style="position:relative">
+      <div class="library-card-thumb" style="background:linear-gradient(135deg,var(--surface2),var(--bg3))">
+        <span style="z-index:1;font-size:72px">${b.emoji}</span>
+        <div class="library-card-thumb-overlay"></div>
+        ${!isPro && !b.free ? `
+          <div class="locked-overlay">
+            <div style="font-size:24px">🔒</div>
+            <div style="font-size:13px;font-weight:600;color:var(--text)">Pro only</div>
+            <button class="btn btn-accent btn-sm">Upgrade →</button>
+          </div>
+        ` : ''}
+      </div>
+      <div class="library-card-body">
+        <div class="library-card-meta">
+          <span class="difficulty-badge diff-${b.difficulty}">${b.difficulty}</span>
+          ${b.free ? '<span style="background:var(--accent)20;color:var(--accent);font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;text-transform:uppercase">Free</span>' : ''}
+        </div>
+        <div class="library-card-title">${b.title}</div>
+        <div class="library-card-desc">${b.desc}</div>
+        <div class="library-card-footer">
+          <div class="library-card-time">📄 ${b.pages} pages</div>
+          <span style="font-size:12px;color:var(--text3)">${b.topic}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openTutorial(id) {
+  showToast('Opening tutorial...', 'info');
+}
+
+function openBook(id) {
+  showToast('Opening book reader...', 'info');
+}
+
+function filterLibrary(val, type) {
+  showToast(`Filtering by ${type}: ${val || 'all'}`, 'info');
+}
+
+function handleUpgrade(method) {
+  closeModal('upgrade');
+  showToast(`Redirecting to ${method} payment... (demo mode)`, 'info');
+}
+
+renderTutorials();
+renderBooks();
+</script>
+</body>
+</html>

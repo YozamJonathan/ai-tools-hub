@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Tools Hub — Discover, Learn & Master AI</title>
+  <meta name="description" content="The best AI tools directory. Discover, save, and learn about hundreds of AI tools across writing, image, video, code, and more.">
+  <meta name="theme-color" content="#07080f">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ═══ NAVBAR ═══ -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-dot"></div>
+      AI Tools Hub
+    </a>
+
+    <div class="nav-search">
+      <span class="nav-search-icon">⌕</span>
+      <input type="text" id="nav-search-input" placeholder="Search AI tools...">
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html"        class="nav-link active">Tools</a>
+      <a href="pages/library.html" class="nav-link">
+        Library <span class="pro-badge">Pro</span>
+      </a>
+      <a href="pages/favorites.html" class="nav-link">Saved</a>
+      <a href="pages/suggest.html"   class="nav-link">Suggest</a>
+    </div>
+
+    <!-- Guest buttons -->
+    <div id="auth-buttons" style="display:flex;align-items:center;gap:8px">
+      <button class="nav-btn nav-btn-ghost" onclick="openModal('login')">Sign in</button>
+      <button class="nav-btn nav-btn-primary" onclick="openModal('register')">Join free</button>
+    </div>
+
+    <!-- Logged-in user -->
+    <div id="user-menu" style="display:none;align-items:center;gap:8px">
+      <button id="install-btn" class="nav-btn nav-btn-ghost"
+              onclick="installPWA()" style="display:none;align-items:center;gap:6px">
+        ⬇ Install
+      </button>
+      <span style="font-size:14px;color:var(--text2)">Hi, <strong id="user-name" style="color:var(--text)"></strong></span>
+      <a href="pages/admin.html" style="font-size:13px;color:var(--primary2);cursor:pointer">Admin</a>
+      <button class="nav-btn nav-btn-ghost" onclick="handleLogout()">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ CATEGORY BAR ═══ -->
+<div class="category-bar">
+  <div class="category-bar-inner" id="category-tabs"></div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge">
+    <div class="hero-badge-dot"></div>
+    Updated weekly
+  </div>
+  <h1>
+    Discover the best<br>
+    <span class="gradient-text">AI tools</span> for your work
+  </h1>
+  <p class="hero-sub">
+    Browse hundreds of AI tools across every category. Save your favorites, read real reviews, and learn with Pro tutorials.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">240+</div>
+      <div class="hero-stat-label">AI Tools</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">18</div>
+      <div class="hero-stat-label">Categories</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">4.2k+</div>
+      <div class="hero-stat-label">Members</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">850+</div>
+      <div class="hero-stat-label">Reviews</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<main class="main-content">
+  <div class="main-inner">
+
+    <!-- New tools banner -->
+    <div class="new-banner">
+      <div class="new-banner-badge">🆕 This Week</div>
+      <div class="new-banner-text">
+        <strong>4 new AI tools</strong> added this week — including Suno AI, Runway ML, ElevenLabs, and Cursor.
+      </div>
+      <div class="new-banner-count">+4</div>
+    </div>
+
+    <!-- Trending -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">
+          🔥 Trending Now
+          <span class="section-title-accent">Most upvoted this month</span>
+        </div>
+        <span class="see-all" onclick="selectCategory('all')">View all →</span>
+      </div>
+      <div class="trending-row" id="trending-row"></div>
+    </div>
+
+    <!-- All tools grid -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">
+          All Tools
+          <span class="section-title-accent" id="results-count"></span>
+        </div>
+      </div>
+      <div class="tools-grid card-stagger" id="tools-grid"></div>
+    </div>
+
+    <!-- Pro upsell -->
+    <div class="pro-upsell">
+      <div class="pro-badge" style="font-size:12px;padding:5px 14px;margin-bottom:16px;display:inline-flex">
+        ⚡ Pro
+      </div>
+      <h2 style="font-size:28px;margin-bottom:8px">Level up with Pro</h2>
+      <p style="color:var(--text2);font-size:15px;max-width:480px;margin:0 auto 20px">
+        Get access to our full AI tutorial library, AI engineering books, tool comparisons, and personalized recommendations.
+      </p>
+      <div class="pro-upsell-price">
+        5,000 <span>TZS/month</span>
+      </div>
+      <p style="color:var(--text3);font-size:13px;margin-bottom:24px">≈ $1.94 USD · Cancel anytime</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-accent btn-lg" onclick="openModal('register')">Start learning free →</button>
+        <a href="pages/library.html" class="btn btn-outline">View Pro library</a>
+      </div>
+      <div style="display:flex;justify-content:center;gap:24px;margin-top:20px;flex-wrap:wrap">
+        <span style="font-size:13px;color:var(--text3)">✓ AI tutorials library</span>
+        <span style="font-size:13px;color:var(--text3)">✓ AI engineering books</span>
+        <span style="font-size:13px;color:var(--text3)">✓ Tool comparisons</span>
+        <span style="font-size:13px;color:var(--text3)">✓ Early access</span>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="nav-logo-dot"></div>
+        AI Tools Hub
+      </div>
+      <p class="footer-desc">
+        The go-to directory for discovering and learning about AI tools. Built for students, creators, developers, and anyone curious about AI.
+      </p>
+      <div class="footer-social">
+        <a class="footer-social-btn" href="https://instagram.com" target="_blank" title="Instagram">📸</a>
+        <a class="footer-social-btn" href="#" title="Contact">✉</a>
+        <a class="footer-social-btn" href="#" title="Portfolio">🌐</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Platform</div>
+      <div class="footer-links">
+        <a class="footer-link" href="index.html">Browse Tools</a>
+        <a class="footer-link" href="pages/library.html">Pro Library</a>
+        <a class="footer-link" href="pages/favorites.html">My Favorites</a>
+        <a class="footer-link" href="pages/suggest.html">Suggest a Tool</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Community</div>
+      <div class="footer-links">
+        <a class="footer-link" onclick="openModal('login')">Sign In</a>
+        <a class="footer-link" onclick="openModal('register')">Create Account</a>
+        <a class="footer-link" onclick="openModal('ask-yozee')">Ask Yozee</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Built by Yozee</div>
+      <div class="footer-links">
+        <a class="footer-link" href="https://instagram.com" target="_blank">Instagram →</a>
+        <a class="footer-link" href="#">Portfolio →</a>
+        <a class="footer-link" href="#">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 AI Tools Hub · Built with passion by Yozee</span>
+    <span>Dar es Salaam, Tanzania 🇹🇿</span>
+  </div>
+</footer>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast-container" id="toast-container"></div>
+
+<!-- ═══ MODALS ═══ -->
+
+<!-- Login Modal -->
+<div class="modal-overlay" id="modal-login">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Welcome back</div>
+      <div class="modal-sub">Sign in to your AI Tools Hub account</div>
+    </div>
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <input type="email" id="login-email" class="form-input" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="login-pass" class="form-input" placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn btn-primary btn-full" style="margin-top:8px">Sign in</button>
+    </form>
+    <div class="form-divider">or</div>
+    <div style="text-align:center;font-size:14px;color:var(--text2)">
+      Don't have an account?
+      <a style="color:var(--primary2);cursor:pointer;font-weight:600" onclick="closeModal('login');openModal('register')">Join free</a>
+    </div>
+    <button onclick="closeModal('login')" style="position:absolute;top:20px;right:20px;background:transparent;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+  </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal-overlay" id="modal-register">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Join AI Tools Hub</div>
+      <div class="modal-sub">Free forever. No credit card required.</div>
+    </div>
+    <form onsubmit="handleRegister(event)">
+      <div class="form-group">
+        <label class="form-label">Your name</label>
+        <input type="text" id="reg-name" class="form-input" placeholder="Amina Yozee">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <input type="email" id="reg-email" class="form-input" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="reg-pass" class="form-input" placeholder="Min 8 characters">
+      </div>
+      <button type="submit" class="btn btn-primary btn-full" style="margin-top:8px">Create free account</button>
+    </form>
+    <p style="font-size:12px;color:var(--text3);text-align:center;margin-top:12px">
+      By joining you agree to our Terms of Service
+    </p>
+    <div class="form-divider">Already have an account?</div>
+    <button class="btn btn-outline btn-full" onclick="closeModal('register');openModal('login')">Sign in instead</button>
+    <button onclick="closeModal('register')" style="position:absolute;top:20px;right:20px;background:transparent;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+  </div>
+</div>
+
+<!-- Tool Detail Modal -->
+<div class="modal-overlay" id="modal-tool-detail">
+  <!-- Populated dynamically by JS -->
+</div>
+
+<!-- Write Review Modal -->
+<div class="modal-overlay" id="modal-write-review">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Write a review</div>
+      <div class="modal-sub">Share your honest experience with this tool</div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Your rating</label>
+      <div class="star-input">
+        <button type="button" class="star-btn" onclick="setStarRating(1)">★</button>
+        <button type="button" class="star-btn" onclick="setStarRating(2)">★</button>
+        <button type="button" class="star-btn" onclick="setStarRating(3)">★</button>
+        <button type="button" class="star-btn" onclick="setStarRating(4)">★</button>
+        <button type="button" class="star-btn" onclick="setStarRating(5)">★</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Your review</label>
+      <textarea class="form-input form-textarea" id="review-body" placeholder="Share what you think about this tool..."></textarea>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="submitReview()">Submit review</button>
+    <button onclick="closeModal('write-review')" style="position:absolute;top:20px;right:20px;background:transparent;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+  </div>
+</div>
+
+<!-- Suggest Modal -->
+<div class="modal-overlay" id="modal-suggest">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Suggest a tool</div>
+      <div class="modal-sub">Know a great AI tool we're missing? Tell us!</div>
+    </div>
+    <form id="suggest-form" onsubmit="handleSuggest(event)">
+      <div class="form-group">
+        <label class="form-label">Tool name</label>
+        <input type="text" id="suggest-name" class="form-input" placeholder="e.g. Otter.ai">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Official URL</label>
+        <input type="url" id="suggest-url" class="form-input" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Why should we add it?</label>
+        <textarea class="form-input form-textarea" id="suggest-desc" placeholder="What makes this tool great?"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Submit suggestion</button>
+    </form>
+    <button onclick="closeModal('suggest')" style="position:absolute;top:20px;right:20px;background:transparent;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+  </div>
+</div>
+
+<!-- Ask Yozee Modal -->
+<div class="modal-overlay" id="modal-ask-yozee">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Ask Yozee</div>
+      <div class="modal-sub">Got a question about any AI tool? I'll reply personally.</div>
+    </div>
+    <form id="ask-form" onsubmit="handleAskYozee(event)">
+      <div class="form-group">
+        <label class="form-label">Your question</label>
+        <textarea class="form-input form-textarea" id="ask-message" placeholder="What would you like to know about this tool?"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">Send question</button>
+    </form>
+    <p style="font-size:12px;color:var(--text3);text-align:center;margin-top:12px">
+      Pro members get priority replies within 24 hours
+    </p>
+    <button onclick="closeModal('ask-yozee')" style="position:absolute;top:20px;right:20px;background:transparent;border:none;color:var(--text3);font-size:20px;cursor:pointer">✕</button>
+  </div>
+</div>
+
+<script>
+  function submitReview() {
+    const body = document.getElementById('review-body')?.value;
+    if (!State.starRating) { showToast('Please select a star rating', 'error'); return; }
+    if (!body) { showToast('Please write a review', 'error'); return; }
+    closeModal('write-review');
+    showToast('Review submitted! It will appear after approval.', 'success');
+  }
+</script>
+<script src="js/app.js"></script>
+</body>
+</html>
