@@ -10,10 +10,28 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminToolController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tools = Tool::with('category')->latest()->paginate(20);
-        return view('admin.tools.index', compact('tools'));
+        $query = Tool::with('category');
+
+        // Search by name
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('url', 'like', "%{$search}%");
+            });
+        }
+
+        // Filter by category
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->input('category_id'));
+        }
+
+        $tools = $query->latest()->paginate(20);
+        $categories = Category::orderBy('name')->get();
+
+        return view('admin.tools.index', compact('tools', 'categories'));
     }
 
     public function create()

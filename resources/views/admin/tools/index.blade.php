@@ -2,32 +2,6 @@
 @section('title', 'Manage Tools — Admin')
 
 @section('content')
-<div class="admin-layout">
-
-    {{-- Sidebar --}}
-    <aside class="admin-sidebar">
-        <nav class="admin-nav">
-            <a class="admin-nav-item" href="{{ route('admin.dashboard') }}">
-                <span class="admin-nav-icon">📊</span> Dashboard
-            </a>
-            <a class="admin-nav-item active" href="{{ route('admin.tools.index') }}">
-                <span class="admin-nav-icon">🛠</span> Tools
-            </a>
-            <a class="admin-nav-item" href="{{ route('admin.suggestions.index') }}">
-                <span class="admin-nav-icon">💡</span> Suggestions
-            </a>
-            <a class="admin-nav-item" href="{{ route('admin.reviews.index') }}">
-                <span class="admin-nav-icon">⭐</span> Reviews
-            </a>
-            <a class="admin-nav-item" href="{{ route('admin.messages.index') }}">
-                <span class="admin-nav-icon">💬</span> Messages
-            </a>
-            <a class="admin-nav-item" href="{{ route('home') }}">
-                <span class="admin-nav-icon">🌐</span> View Site ↗
-            </a>
-        </nav>
-    </aside>
-
     {{-- Main Content --}}
     <main class="admin-content">
 
@@ -41,6 +15,42 @@
             ✓ {{ session('success') }}
         </div>
         @endif
+
+        {{-- Search & Filter Form --}}
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);padding:16px;margin-bottom:20px">
+            <form method="GET" action="{{ route('admin.tools.index') }}" style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+                
+                <div style="flex:1;min-width:240px">
+                    <label style="display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Search by name or URL</label>
+                    <input type="text" name="search" placeholder="e.g. ChatGPT, openai.com..." class="form-input"
+                           value="{{ request('search') }}" style="width:100%">
+                </div>
+
+                <div style="min-width:180px">
+                    <label style="display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Category</label>
+                    <select name="category_id" class="form-input" style="width:100%">
+                        <option value="">All Categories</option>
+                        @foreach($categories as $cat)
+                        <option value="{{ $cat->id }}" {{ request('category_id') == $cat->id ? 'selected' : '' }}>
+                            {{ $cat->icon }} {{ $cat->name }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div style="display:flex;gap:8px">
+                    <button type="submit" class="btn btn-primary" style="padding:9px 18px;font-size:13px">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    @if(request('search') || request('category_id'))
+                    <a href="{{ route('admin.tools.index') }}" class="btn btn-outline" style="padding:9px 18px;font-size:13px">
+                        <i class="fas fa-times"></i> Clear
+                    </a>
+                    @endif
+                </div>
+
+            </form>
+        </div>
 
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--card-radius);overflow:hidden">
             <table class="data-table">
@@ -92,7 +102,11 @@
                     @empty
                     <tr>
                         <td colspan="6" style="text-align:center;padding:40px;color:var(--text3)">
-                            No tools yet. <a href="{{ route('admin.tools.create') }}" style="color:var(--primary2)">Add the first one →</a>
+                            @if(request('search') || request('category_id'))
+                                No tools found. <a href="{{ route('admin.tools.index') }}" style="color:var(--primary2)">Clear filters →</a>
+                            @else
+                                No tools yet. <a href="{{ route('admin.tools.create') }}" style="color:var(--primary2)">Add the first one →</a>
+                            @endif
                         </td>
                     </tr>
                     @endforelse
@@ -102,9 +116,8 @@
 
         {{-- Pagination --}}
         <div style="margin-top:20px">
-            {{ $tools->links() }}
+            {{ $tools->appends(request()->query())->links() }}
         </div>
 
     </main>
-</div>
 @endsection

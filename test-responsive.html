@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Hamburger Test</title>
+    <style>
+        :root {
+            --text: #ffffff;
+            --text2: #9ca3af;
+            --bg: #07080f;
+            --primary: #6c63ff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .navbar {
+            background: #07080fcc;
+            border-bottom: 1px solid #1e1f2e;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            height: 64px;
+        }
+
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-right: 8px;
+            text-decoration: none;
+        }
+
+        .nav-logo-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+
+        /* Key hamburger styles */
+        .navbar-hamburger {
+            display: none !important;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            padding: 6px 8px;
+            margin-right: 12px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .navbar-hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: var(--text2);
+            border-radius: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-hamburger:hover span {
+            background-color: var(--text);
+        }
+
+        .navbar-hamburger.open span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+            background-color: var(--text);
+        }
+
+        .navbar-hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .navbar-hamburger.open span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+            background-color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: auto;
+        }
+
+        .nav-link {
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text2);
+            cursor: pointer;
+            white-space: nowrap;
+            background: transparent;
+            border: none;
+            text-decoration: none;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar-overlay {
+            display: none !important;
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background: var(--bg);
+            border-bottom: 1px solid #1e1f2e;
+            z-index: 98;
+            max-height: calc(100vh - 64px);
+            overflow-y: auto;
+        }
+
+        .navbar-overlay.open {
+            display: block !important;
+        }
+
+        .navbar-overlay-content {
+            padding: 12px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .navbar-overlay .nav-link {
+            display: block;
+            padding: 12px 24px;
+            border-radius: 0;
+        }
+
+        /* ============= MOBILE STYLES ============= */
+        @media (max-width: 768px) {
+            .navbar-hamburger {
+                display: flex !important;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 6px;
+            }
+
+            .nav-links {
+                display: none !important;
+            }
+        }
+
+        /* Test indicator */
+        .breakpoint-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <button class="navbar-hamburger" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <a href="#" class="nav-logo">
+                    <div class="nav-logo-dot"></div>
+                    AI Tools Hub
+                </a>
+            </div>
+
+            <div class="nav-links">
+                <a href="#" class="nav-link">Tools</a>
+                <a href="#" class="nav-link">Library</a>
+                <a href="#" class="nav-link">Saved</a>
+                <a href="#" class="nav-link">Messages</a>
+                <a href="#" class="nav-link">Suggest</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="navbar-overlay" id="overlay">
+        <div class="navbar-overlay-content">
+            <a href="#" class="nav-link">Tools</a>
+            <a href="#" class="nav-link">Library</a>
+            <a href="#" class="nav-link">Saved</a>
+            <a href="#" class="nav-link">Messages</a>
+            <a href="#" class="nav-link">Suggest</a>
+        </div>
+    </div>
+
+    <div class="breakpoint-indicator" id="breakpoint">
+        Width: <span id="width"></span>px
+    </div>
+
+    <div style="padding: 40px; color: white;">
+        <h1>Responsive Hamburger Menu Test</h1>
+        <p>Resize your browser window to below 768px to see the hamburger menu.</p>
+        <p>Current viewport width is shown in the bottom right corner.</p>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const hamburger = document.querySelector('.navbar-hamburger');
+            const overlay = document.querySelector('.navbar-overlay');
+            hamburger.classList.toggle('open');
+            overlay.classList.toggle('open');
+        }
+
+        function updateWidth() {
+            document.getElementById('width').textContent = window.innerWidth;
+        }
+
+        window.addEventListener('resize', updateWidth);
+        updateWidth();
+
+        // Close menu on link click
+        document.querySelectorAll('.navbar-overlay .nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.navbar-hamburger').classList.remove('open');
+                document.querySelector('.navbar-overlay').classList.remove('open');
+            });
+        });
+    </script>
+</body>
+</html>

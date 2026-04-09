@@ -3,50 +3,6 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
-<div class="admin-layout">
-
-    {{-- Sidebar --}}
-    <aside class="admin-sidebar">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);padding:0 12px;margin-bottom:12px">Overview</div>
-        <nav class="admin-nav">
-            <a class="admin-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
-               href="{{ route('admin.dashboard') }}">
-                <span class="admin-nav-icon">📊</span> Dashboard
-            </a>
-            <a class="admin-nav-item {{ request()->routeIs('admin.tools.*') ? 'active' : '' }}"
-               href="{{ route('admin.tools.index') }}">
-                <span class="admin-nav-icon">🛠</span> Tools
-            </a>
-            <a class="admin-nav-item {{ request()->routeIs('admin.suggestions.*') ? 'active' : '' }}"
-               href="{{ route('admin.suggestions.index') }}">
-                <span class="admin-nav-icon">💡</span> Suggestions
-                @if($stats['pending_suggestions'] > 0)
-                <span style="margin-left:auto;font-size:11px;background:var(--amber)20;color:var(--amber);padding:2px 7px;border-radius:100px;font-weight:700">{{ $stats['pending_suggestions'] }}</span>
-                @endif
-            </a>
-            <a class="admin-nav-item {{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}"
-               href="{{ route('admin.reviews.index') }}">
-                <span class="admin-nav-icon">⭐</span> Reviews
-                @if($stats['pending_reviews'] > 0)
-                <span style="margin-left:auto;font-size:11px;background:var(--amber)20;color:var(--amber);padding:2px 7px;border-radius:100px;font-weight:700">{{ $stats['pending_reviews'] }}</span>
-                @endif
-            </a>
-            <a class="admin-nav-item {{ request()->routeIs('admin.messages.*') ? 'active' : '' }}"
-               href="{{ route('admin.messages.index') }}">
-                <span class="admin-nav-icon">💬</span> Messages
-                @if($stats['pending_messages'] > 0)
-                <span style="margin-left:auto;font-size:11px;background:var(--accent2)20;color:var(--accent2);padding:2px 7px;border-radius:100px;font-weight:700">{{ $stats['pending_messages'] }}</span>
-                @endif
-            </a>
-        </nav>
-
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text3);padding:0 12px;margin:24px 0 12px">Site</div>
-        <nav class="admin-nav">
-            <a class="admin-nav-item" href="{{ route('home') }}" target="_blank">
-                <span class="admin-nav-icon">🌐</span> View Site ↗
-            </a>
-        </nav>
-    </aside>
 
     {{-- Main --}}
     <main class="admin-content">
@@ -113,5 +69,4 @@
             </div>
         </div>
     </main>
-</div>
 @endsection

@@ -8,14 +8,30 @@ use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
-   
-
+    /**
+     * Show user's messages with replies
+     */
     public function index()
     {
-        $messages = Auth::user()->messages()->with('tool')->latest()->get();
-        return view('messages', compact('messages'));
+        $messages = Auth::user()
+            ->messages()
+            ->with('tool')
+            ->latest()
+            ->paginate(10);
+        
+        // Count unread replies
+        $unreadReplies = Auth::user()
+            ->messages()
+            ->where('status', 'replied')
+            ->whereNull('read_at')
+            ->count();
+
+        return view('messages', compact('messages', 'unreadReplies'));
     }
 
+    /**
+     * Send a new message (Ask Yozee)
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -32,5 +48,35 @@ class MessageController extends Controller
         ]);
 
         return back()->with('success', 'Message sent to Yozee! You will get a reply soon.');
+    }
+
+    /**
+     * Show single message and mark as read
+     */
+    public function show(Message $message)
+    {
+        // Check authorization
+        if ($message->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        // Mark as read if it has a reply
+        $message->markAsRead();
+
+        return view('messages.show', compact('message'));
+    }
+
+    /**
+     * Mark message as read (AJAX)
+     */
+    public function markAsRead(Message $message)
+    {
+        if ($message->user_id !== Auth::id()) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        $message->markAsRead();
+
+        return response()->json(['success' => true]);
     }
 }

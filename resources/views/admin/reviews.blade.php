@@ -2,30 +2,6 @@
 @section('title', 'Reviews — Admin')
 
 @section('content')
-<div class="admin-layout">
-
-    <aside class="admin-sidebar">
-        <nav class="admin-nav">
-            <a class="admin-nav-item" href="{{ route('admin.dashboard') }}">
-                <span class="admin-nav-icon">📊</span> Dashboard
-            </a>
-            <a class="admin-nav-item" href="{{ route('admin.tools.index') }}">
-                <span class="admin-nav-icon">🛠</span> Tools
-            </a>
-            <a class="admin-nav-item" href="{{ route('admin.suggestions.index') }}">
-                <span class="admin-nav-icon">💡</span> Suggestions
-            </a>
-            <a class="admin-nav-item active" href="{{ route('admin.reviews.index') }}">
-                <span class="admin-nav-icon">⭐</span> Reviews
-            </a>
-            <a class="admin-nav-item" href="{{ route('admin.messages.index') }}">
-                <span class="admin-nav-icon">💬</span> Messages
-            </a>
-            <a class="admin-nav-item" href="{{ route('home') }}">
-                <span class="admin-nav-icon">🌐</span> View Site ↗
-            </a>
-        </nav>
-    </aside>
 
     <main class="admin-content">
 
@@ -107,5 +83,4 @@
         </div>
 
     </main>
-</div>
 @endsection

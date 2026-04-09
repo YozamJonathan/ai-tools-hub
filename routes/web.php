@@ -15,6 +15,8 @@ use App\Http\Controllers\Admin\AdminToolController;
 use App\Http\Controllers\Admin\AdminSuggestionController;
 use App\Http\Controllers\Admin\AdminMessageController;
 use App\Http\Controllers\Admin\AdminReviewController;
+use App\Http\Controllers\Admin\AdminRevenueController;
+use App\Http\Controllers\NotificationController;
 
 // ── Public Routes ─────────────────────────────────────────
 
@@ -48,6 +50,11 @@ Route::middleware('auth')->group(function () {
     // Messages (Ask Yozee)
     Route::get('/messages', [MessageController::class, 'index'])->name('messages');
     Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+    Route::get('/messages/{message}', [MessageController::class, 'show'])->name('messages.show');
+    Route::post('/messages/{message}/read', [MessageController::class, 'markAsRead'])->name('messages.read');
+
+    // Notifications (AJAX)
+    Route::get('/api/notifications/unread', [NotificationController::class, 'getUnreadCounts'])->name('notifications.unread');
 });
 
 // ── Admin Routes ──────────────────────────────────────────
@@ -77,6 +84,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
     Route::post('/reviews/{review}/approve', [AdminReviewController::class, 'approve'])->name('reviews.approve');
     Route::post('/reviews/{review}/reject', [AdminReviewController::class, 'reject'])->name('reviews.reject');
+
+    // Revenue / Pro Users
+    Route::get('/revenue', [AdminRevenueController::class, 'index'])->name('revenue.index');
 });
 
 // Laravel Breeze auth routes (login, register, logout)
